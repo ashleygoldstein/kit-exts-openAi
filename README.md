@@ -14,5 +14,8 @@ Please be sure to enter your personal API Key in the api.py file.
 Questions? Join the Discord discord.gg/nvidiaomniverse and tag me at @AshleyG or email me at agoldstein@nvidia.com
 
 Resources:
+- Must download the OpenAI API to use
 https://openai.com/api/
+
+
 https://www.scrapingbee.com/blog/download-image-python/
