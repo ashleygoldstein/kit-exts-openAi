@@ -7,7 +7,7 @@ openai.api_key = API_KEY
 
 
 response = openai.Image.create(
-  prompt="landscape made out of croissants and whipcream and rocky road ice cream chocolate chips with seagulls flying over",
+  prompt="long hallway lined with books",
   n=1,
   size="1024x1024"
 )

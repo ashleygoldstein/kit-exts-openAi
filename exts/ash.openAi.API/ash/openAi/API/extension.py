@@ -20,41 +20,62 @@ class MyExtension(omni.ext.IExt):
 
         self._count = 0
 
-        self._window = ui.Window("My Window", width=300, height=300)
+        self._window = ui.Window("GenAI API Sample", width=600, height=300)
         with self._window.frame:
             with ui.VStack():
-                label = ui.Label("")
-
-
-                def on_click():
-                    omni.kit.commands.execute('DeletePrims',
-                        paths=['/World/Plane/Looks'],
-                        destructive=False)
-
-                    omni.kit.commands.execute('CreateAndBindMdlMaterialFromLibrary',
-                        mdl_name='OmniSurface.mdl',
-                        mtl_name='OmniSurface',
-                        mtl_created_list=['/World/Looks/OmniSurface'],
-                        bind_selected_prims=False)
-
-                    omni.kit.commands.execute('MovePrim',
-                        path_from='/World/Looks',
-                        path_to='/World/Plane/Looks',
-                        destructive=False)
-
-
-                def on_reset():
-                    omni.kit.commands.execute('ChangeProperty',
-                        prop_path=Sdf.Path('/World/Plane/Looks/OmniSurface/Shader.inputs:diffuse_reflection_color_image'),
-                        value=Sdf.AssetPath('C:/Users/agoldstein/OneDrive - NVIDIA Corporation/Documents/omniverse extensions/kit-exts-openAi/generatedImg.png'),
-                        prev=None)
-
-
-                on_reset()
-
                 with ui.HStack():
-                    ui.Button("Add", clicked_fn=on_click)
-                    ui.Button("Generate", clicked_fn=on_reset)
+                    ui.Label("Open this Extension in VS Code.")
+                with ui.HStack():
+                    ui.Label("Step 1: Insert your custom API key in api.py.")
+                with ui.HStack():
+                    ui.Label("Step 2: Change the AssetPath in def on_reset in extension.py.")
+                with ui.HStack():
+                    ui.Label("Step 3: Customize your prompt in generate.py.")
+                with ui.HStack():
+                    ui.Label("Step 4: Follow the buttons 1-4 below.")
+                with ui.HStack():
+                    ui.Label("This is a sample of how to use a Generative AI API and not intended for final production use.",
+                            word_wrap=True)
+
+                with ui.CanvasFrame():
+                    with ui.HStack():
+                        def on_click():
+                            omni.kit.commands.execute('DeletePrims',
+                                paths=['/World/Looks', '/World/Plane'],
+                                destructive=False)
+                        
+                            omni.kit.commands.execute('CreateMeshPrimWithDefaultXform',
+                                prim_type='Plane',
+                                prim_path=None,
+                                select_new_prim=True,
+                                prepend_default_prim=True)
+
+                        def on_create():
+                            omni.kit.commands.execute('CreateAndBindMdlMaterialFromLibrary',
+                                mdl_name='OmniSurface.mdl',
+                                mtl_name='OmniSurface',
+                                mtl_created_list=['/World/Looks/OmniSurface'],
+                                bind_selected_prims=['/World/Plane'])
+
+
+                        def on_reset():
+                            omni.kit.commands.execute('ChangeProperty',
+                                prop_path=Sdf.Path('/World/Plane/Looks/OmniSurface/Shader.inputs:diffuse_reflection_color_image'),
+                                #Change the AssetPath to wherever your image is generated to. example "C:/Users/...Pictures/generatedImg.png"
+                                value=Sdf.AssetPath(''),
+                                prev=None)
+                        
+                        def on_bind():
+                            omni.kit.commands.execute('MovePrim',
+                                path_from='/World/Looks',
+                                path_to='/World/Plane/Looks',
+                                keep_world_transform=False,
+                                destructive=False)
+
+                        ui.Button("1.Add", clicked_fn=on_click)
+                        ui.Button("2.Create", clicked_fn=on_create)
+                        ui.Button("3.Bind", clicked_fn=on_bind)
+                        ui.Button("4.Generate", clicked_fn=on_reset)
 
     def on_shutdown(self):
         print("[ash.openAi.API] MyExtension shutdown")
